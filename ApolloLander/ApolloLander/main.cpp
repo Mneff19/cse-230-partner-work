@@ -198,9 +198,9 @@ int main()
     double dx = prompt("What is your horizontal velocity (m/s)? ");
     double dy = prompt("What is your vertical velocity (m/s)? ");
     double y = prompt("What is your altitude (m)? ");
-    double x = prompt("What is your position (m)? ");
     double aDegrees = prompt("What is the angle of the LM where 0 is up (degrees)? ");
-    double t = prompt("What is the time interval (s)? ");
+    double x = 0.0;
+    double t = 1.0;
     double aRadians;            // Angle in radians
     double accelerationThrust;  // Acceleration due to thrust
     double ddxThrust;           // Horizontal acceleration due to thrust
@@ -208,15 +208,15 @@ int main()
     double ddx;                 // Total horizontal acceleration
     double ddy;                 // Total vertical acceleration
     double v;                   // Total velocity
-
+    
+    accelerationThrust = computeAcceleration(THRUST, WEIGHT);
+    aRadians = convertDegToRad(aDegrees);
+    ddxThrust = computeHorizontalComponent(aRadians, accelerationThrust);
+    ddyThrust = computeVerticalComponent(aRadians, accelerationThrust);
+    
     // Go through the simulator five times
-    // your code goes here
     for (int i = 0; i < 5; i++) {
         // Calculate the components of the acceleration due to thrust and gravity.
-        accelerationThrust = computeAcceleration(THRUST, WEIGHT);
-        aRadians = convertDegToRad(aDegrees);
-        ddxThrust = computeHorizontalComponent(aRadians, accelerationThrust);
-        ddyThrust = computeVerticalComponent(aRadians, accelerationThrust);
         ddx = ddxThrust;
         ddy = ddyThrust + GRAVITY;
         
@@ -234,9 +234,11 @@ int main()
         // Output
         cout.setf(ios::fixed | ios::showpoint);
         cout.precision(2);
-        cout << "\tNew position:   (" << x << ", " << y << ")m\n";
-        cout << "\tNew velocity:   (" << dx << ", " << dy << ")m/s\n";
-        cout << "\tTotal velocity:  " << v << "m/s\n\n";
+        cout << i + 1 << "s "
+             << "x,y:(" << x << ", " << y << ")m  "
+             << "dx,dy:(" << dx << ", " << dy << ")m/s  "
+             << "speed:" << v << "m/s  "
+             << "angle:" << aDegrees << "deg\n";
     }
 
     return 0;
